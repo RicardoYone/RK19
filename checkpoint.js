@@ -39,13 +39,14 @@ const {
 
 var isAncestor = function(genealogyTree, ancestor, descendant){
   // Tu código aca:
-  if(genealogyTree.ancestor='descendant'){
+  if(genealogyTree.ancestor===descendant){
     return true;
   }
   else{
     return false;
   }
 }
+
 
 // EJERCICIO 2
 // Secuencia inventada: f(n) = f(n-1) x f(n-2) - f(n-2)
@@ -82,6 +83,21 @@ var isAncestor = function(genealogyTree, ancestor, descendant){
 function secuenciaHenry(obj, n) {
   // Tu código aca:
 
+  var pri=obj.first;
+  var sec=(Object.keys(obj)).length;
+  
+  if(n===0){
+    return pri;
+  }
+  if(n===1){
+    return sec;
+  }
+  if(n>1){
+    return secuenciaHenry(obj, n-1)*secuenciaHenry(obj, n-2)-secuenciaHenry(obj, n-2);
+  }
+  else{
+    return null;
+  }
 
 }
 
@@ -103,10 +119,17 @@ function secuenciaHenry(obj, n) {
 
 LinkedList.prototype.size = function(){
   // Tu código aca:
- 
-
+  var nodoActual = this.head;
+  if(nodoActual === null){
+    return 0;
+  }
+  var size = 1;
+  while ( nodoActual.next !== null){
+    size++;
+    nodoActual = nodoActual.next
+  }
+  return size;
 }
-
 
 // EJERCICIO 4
 // Implementar el método switchPos dentro del prototype de LinkedList que deberá intercambiar
@@ -126,8 +149,47 @@ LinkedList.prototype.size = function(){
 LinkedList.prototype.switchPos = function(pos1, pos2){
   // Tu código aca:
 
+  // let value1;
+  // let value2;
 
+  // //encuentro el valor del nodo de la pos1
+  // if(pos1 > this._length || pos1 < 0){
+  //   return false;
+  // }
+  // else{
+  //   let actual=this.head;
+  //   while(pos1>0){
+  //     pos1--;
+  //     actual=actual.next;
+  //   }
+  //   value1 = actual.value;
+  //   actual.value=null;
+  // }
 
+  // if(pos2 > this._length|| pos2 < 0){
+  //   return false;
+  // }
+  // else{
+  //   let actual=this.head;
+  //   while(pos2>0){
+  //     pos2--;
+  //     actual=actual.next;
+  //   }
+  //   value2 = actual.value;
+  //   actual.value=value1;
+  // }
+
+  // let actual = this.head;
+  // if(pos1===0){
+  //   actual.value = value2;
+  // }
+
+  // while(pos1 > 0){
+  //   pos1--;
+  //   actual=actual.next;
+  // }
+  // actual.value = value2;
+  // return true;
 }
 
 // EJERCICIO 5
@@ -143,7 +205,7 @@ LinkedList.prototype.switchPos = function(pos1, pos2){
 // Continuando con el nodo 2 de la lista 2, conectandose con el nodo 2 de la lista 2.
 var mergeLinkedLists = function(linkedListOne, linkedListTwo){
   // Tu código aca:
-
+  
 }
 
 
@@ -217,7 +279,9 @@ var cardGame = function(playerOneCards, playerTwoCards){
 BinarySearchTree.prototype.height = function(){
   // Tu código aca:
   
+
 }
+
 
 
 // ---------------
@@ -234,11 +298,27 @@ BinarySearchTree.prototype.height = function(){
 //    array = [1,2,3,4,5,6,7,8,9,10];
 //    binarySearch(array, 2) --> Devolvería 1 ya que array[1] = 2
 //    [Donde 2 sería el número sobre el cuál queremos saber su posición en el array]
-
-
+                             // list    value
 var binarySearch = function (array, target) {
   // Tu código aca:
+  let first=0;
+  let last=array.length-1;
+  let position=-1;
+  let found=false;
+  let middle;
 
+  while(found===false && first<=last){
+    middle=Math.floor((first+last)/2);
+    if(array[middle]==target){
+      found=true;
+      position=middle;
+    }else if(array[middle]>target){
+      last=middle-1;
+    }else{
+      first=middle+1;
+    }
+  }
+  return position;
 }
 
 // EJERCICIO 9
@@ -265,8 +345,18 @@ var binarySearch = function (array, target) {
 // ]
 
 var specialSort = function(array, orderFunction) {
-  // Tu código aca:
+  // Tu código aca: 
 
+  for (var i=0; i<array.length; i++) {
+    for (var j=0; j<array.length; j++) {
+      if (array[j][orderFunction]>array[i][orderFunction]) {
+        var tmp=array[i];
+        array[i]=array[j];
+        array[j]=tmp;
+      }
+    }
+  }
+  return array;
 }
 
 // ----- Closures -----
@@ -300,6 +390,19 @@ var specialSort = function(array, orderFunction) {
 function closureDetect(symptoms, min) {
   // Tu código aca:
 
+  return function(persona) {
+    let contador = 0;
+    // Recorremos el arreglo de sintomas de la persona
+    for (let i = 0; i < persona.symptoms.length; i++) {
+    
+      // Si el sintoma esta en los establecidos
+      if (symptoms.includes(persona.symptoms[i])) contador++;
+
+      // Si alcanzamos el minimo, dejamos de buscar
+      if (contador >= min) return true;
+    }
+    return false;
+  }
 }
 
 // -------------------
